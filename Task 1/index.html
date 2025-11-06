@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickSort Visualizer & Comparator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 QuickSort Algorithm Visualizer</h1>
+            <p class="subtitle">Interactive sorting algorithm demonstration and performance comparison</p>
+        </header>
+
+        <main>
+            <!-- Input Section -->
+            <section class="card input-section">
+                <h2>📥 Input Array</h2>
+                <div class="input-group">
+                    <label for="arrayInput">Enter numbers (comma-separated):</label>
+                    <textarea 
+                        id="arrayInput" 
+                        rows="3" 
+                        placeholder="Example: 64, 34, 25, 12, 22, 11, 90, 88, 5, 77"
+                    >64, 34, 25, 12, 22, 11, 90, 88, 5, 77</textarea>
+                </div>
+
+                <div class="button-group">
+                    <button id="generateRandomBtn" class="btn btn-secondary">
+                        🎲 Generate Random Array
+                    </button>
+                    <input type="number" id="arraySize" value="20" min="5" max="100" placeholder="Size">
+                </div>
+
+                <div class="button-group presets">
+                    <button class="btn btn-small" onclick="setPreset('sorted')">📈 Sorted</button>
+                    <button class="btn btn-small" onclick="setPreset('reverse')">📉 Reverse</button>
+                    <button class="btn btn-small" onclick="setPreset('duplicates')">🔄 Duplicates</button>
+                    <button class="btn btn-small" onclick="setPreset('nearly')">📊 Nearly Sorted</button>
+                </div>
+            </section>
+
+            <!-- Algorithm Selection -->
+            <section class="card algorithm-section">
+                <h2>⚙️ Select Algorithm</h2>
+                <div class="algorithm-grid">
+                    <label class="algorithm-option">
+                        <input type="radio" name="algorithm" value="recursive" checked>
+                        <span>QuickSort (Recursive)</span>
+                    </label>
+                    <label class="algorithm-option">
+                        <input type="radio" name="algorithm" value="iterative">
+                        <span>QuickSort (Iterative)</span>
+                    </label>
+                    <label class="algorithm-option">
+                        <input type="radio" name="algorithm" value="optimized">
+                        <span>QuickSort (Optimized)</span>
+                    </label>
+                    <label class="algorithm-option">
+                        <input type="radio" name="algorithm" value="3way">
+                        <span>QuickSort (3-Way)</span>
+                    </label>
+                    <label class="algorithm-option">
+                        <input type="radio" name="algorithm" value="mergeSort">
+                        <span>MergeSort</span>
+                    </label>
+                    <label class="algorithm-option">
+                        <input type="radio" name="algorithm" value="heapSort">
+                        <span>HeapSort</span>
+                    </label>
+                    <label class="algorithm-option">
+                        <input type="radio" name="algorithm" value="bubbleSort">
+                        <span>BubbleSort</span>
+                    </label>
+                    <label class="algorithm-option">
+                        <input type="radio" name="algorithm" value="nativeSort">
+                        <span>Native JS Sort</span>
+                    </label>
+                </div>
+
+                <div class="button-group">
+                    <button id="sortBtn" class="btn btn-primary">
+                        ▶️ Sort Array
+                    </button>
+                    <button id="compareAllBtn" class="btn btn-secondary">
+                        📊 Compare All Algorithms
+                    </button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="card results-section">
+                <h2>📤 Results</h2>
+                <div id="resultsContainer">
+                    <div class="result-display">
+                        <h3>Original Array:</h3>
+                        <div id="originalArray" class="array-display"></div>
+                    </div>
+                    <div class="result-display">
+                        <h3>Sorted Array:</h3>
+                        <div id="sortedArray" class="array-display"></div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Algorithm:</span>
+                            <span id="algorithmName" class="stat-value">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Execution Time:</span>
+                            <span id="executionTime" class="stat-value">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Array Size:</span>
+                            <span id="arrayLength" class="stat-value">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Status:</span>
+                            <span id="sortStatus" class="stat-value">-</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visualization Section -->
+            <section class="card visualization-section">
+                <h2>📊 Array Visualization</h2>
+                <div id="visualizationContainer">
+                    <canvas id="arrayCanvas" width="800" height="400"></canvas>
+                </div>
+                <div class="visualization-controls">
+                    <button id="visualizeBtn" class="btn btn-secondary">
+                        🎬 Visualize Sorting
+                    </button>
+                    <label>
+                        Speed:
+                        <input type="range" id="speedControl" min="1" max="100" value="50">
+                    </label>
+                </div>
+            </section>
+
+            <!-- Comparison Results -->
+            <section class="card comparison-section" id="comparisonSection" style="display: none;">
+                <h2>📈 Performance Comparison</h2>
+                <div id="comparisonResults"></div>
+                <canvas id="comparisonChart" width="800" height="400"></canvas>
+            </section>
+
+            <!-- Algorithm Information -->
+            <section class="card info-section">
+                <h2>📚 Algorithm Information</h2>
+                <div id="algorithmInfo">
+                    <div class="info-card">
+                        <h3>QuickSort</h3>
+                        <p><strong>Time Complexity:</strong></p>
+                        <ul>
+                            <li>Best: O(n log n)</li>
+                            <li>Average: O(n log n)</li>
+                            <li>Worst: O(n²)</li>
+                        </ul>
+                        <p><strong>Space Complexity:</strong> O(log n)</p>
+                        <p><strong>Stable:</strong> No</p>
+                        <p><strong>Description:</strong> Efficient divide-and-conquer algorithm. Fast in practice but can degrade to O(n²) in worst case.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>MergeSort</h3>
+                        <p><strong>Time Complexity:</strong> O(n log n) in all cases</p>
+                        <p><strong>Space Complexity:</strong> O(n)</p>
+                        <p><strong>Stable:</strong> Yes</p>
+                        <p><strong>Description:</strong> Consistent performance but requires additional space.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>HeapSort</h3>
+                        <p><strong>Time Complexity:</strong> O(n log n) in all cases</p>
+                        <p><strong>Space Complexity:</strong> O(1)</p>
+                        <p><strong>Stable:</strong> No</p>
+                        <p><strong>Description:</strong> Consistent performance with in-place sorting.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Created with GitHub Copilot 🤖 | QuickSort Lab Assignment</p>
+        </footer>
+    </div>
+
+    <!-- Include sorting algorithms -->
+    <script src="quicksort.js"></script>
+    <script src="sortingAlgorithms.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
